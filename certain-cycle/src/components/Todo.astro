@@ -1,0 +1,98 @@
+---
+interface Todo {
+  id: number;
+  label: string;
+  title: string;
+  description: string;
+}
+
+const { todos = [] }: { todos: Todo[] } = { todos: [], ...Astro.props };
+---
+
+<style>
+  .card {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 12px;
+    margin: 8px 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    height: 100px;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.5s ease-out forwards;
+    animation-delay: calc(var(--card-index) * 0.1s);
+    transition:
+      transform 0.3s ease,
+      box-shadow 0.3s ease;
+  }
+  .card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  .card-title {
+    font-size: 1.2em;
+    margin-bottom: 8px;
+  }
+  .card-description {
+    color: #555;
+  }
+  .todo-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 auto;
+    padding: 0 16px;
+  }
+  .label {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  .label-circle {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 8px;
+  }
+  .label-circle.design-system {
+    background-color: green;
+  }
+  .label-circle.typography {
+    background-color: rgb(247, 158, 173);
+  }
+
+  @media (max-width: 600px) {
+    .card {
+      padding: 8px;
+    }
+    .card-title {
+      font-size: 1em;
+    }
+  }
+
+  @keyframes fadeInUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>
+
+<div class="todo-list">
+  {
+    todos.map((todo, index) => (
+      <div class="card" style={{ "--card-index": index }}>
+        <div class="label">
+          <div
+            class={`label-circle ${todo.label.toLowerCase().replace(" ", "-")}`}
+          />
+          <div>{todo.label}</div>
+        </div>
+        <div class="card-title">{todo.title}</div>
+        <div class="card-description">{todo.description}</div>
+      </div>
+    ))
+  }
+</div>
