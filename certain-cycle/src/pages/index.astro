@@ -1,4 +1,21 @@
 ---
+import Welcome from "../components/Welcome.astro";
+import Layout from "../layouts/Layout.astro";
+import Todo from "../components/Todo.astro";
+const todos = [
+  {
+    id: 1,
+    label: "Design System",
+    title: "Create Design System",
+    description: "Create a design system for the project",
+  },
+  {
+    id: 2,
+    label: "Typography",
+    title: "Update Typography",
+    description: "Update the typography for the project",
+  },
+];
 import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
 import Footer from '../components/footer.astro';
@@ -9,6 +26,8 @@ import Header from '../components/header.astro';
 ---
 
 <Layout>
+  <Welcome />
+  <Todo todos={todos} />
 	<Header/>
 
 	<Footer/>
