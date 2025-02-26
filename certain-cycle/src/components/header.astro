@@ -1,0 +1,72 @@
+---
+import { Image } from 'astro:assets';
+import Bell_Icon from '../assets/bell-svgrepo-com.svg';
+import FAQ_Icon from '../assets/about-faq-help-question-svgrepo-com.svg';
+import User_Icon from '../assets/user-avatar-profile-svgrepo-com.svg';
+
+---
+
+
+<div id="header_Box">
+    <div class="header">
+        <div id="headertxt">
+            <input id="headertxt" type="text" placeholder="Search Task">
+        </div>
+        <div class="Icons">
+            <a href="#" id="Bell">
+                <img src={Bell_Icon.src} alt="Bell" />
+            </a>
+            <a href="#" id="FAQ">
+                <img src={FAQ_Icon.src} alt="FAQ" />
+            </a>
+            <a href="#" id="User_Icon"> 
+                <img src={User_Icon.src} alt="User" />
+            </a>
+            
+        </div>
+    </div>
+</div>
+
+<style>
+    #header_Box {
+        background-color: #f1f1f1;
+        height: 50px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    #headertxt {
+        border-radius: 25%;
+        width: 11rem;
+        height: 2rem;
+        border: 0px;}
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 80%;
+    }
+    #header_logo img {
+        width: 50px;
+        height: 50px;
+    }
+    .Icons {
+        display: flex;
+        justify-content: space-between;
+        width: 100px;
+    }
+    .Icons img {
+        width: 30px;
+        height: 30px;
+    }
+    #footer_Box {
+        background-color: #f1f1f1;
+        height: 50px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    #footer_Box p {
+        font-size: 20px;
+    }
+</style>
