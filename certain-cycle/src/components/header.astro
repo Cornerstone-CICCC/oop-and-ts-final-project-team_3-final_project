@@ -3,13 +3,16 @@ import { Image } from 'astro:assets';
 import Bell_Icon from '../assets/bell-svgrepo-com.svg';
 import FAQ_Icon from '../assets/about-faq-help-question-svgrepo-com.svg';
 import User_Icon from '../assets/user-avatar-profile-svgrepo-com.svg';
+import Search_I from '../assets/search-svgrepo-com.svg'
 
 ---
 
 
 <div id="header_Box">
     <div class="header">
-        <div id="headertxt">
+        <div class="headertxt">
+            <a href="#" id="Search_Icon">
+                <img src={Search_I.src} alt="Bell" />
             <input id="headertxt" type="text" placeholder="Search Task">
         </div>
         <div class="Icons">
@@ -50,10 +53,23 @@ import User_Icon from '../assets/user-avatar-profile-svgrepo-com.svg';
         width: 50px;
         height: 50px;
     }
+    
     .Icons {
         display: flex;
         justify-content: space-between;
         width: 100px;
+    }
+    #Search_Icon{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+
+    #Search_Icon img {
+        width: 30px;
+        height: 30px;
+        cursor:pointer;
+
     }
     .Icons img {
         width: 30px;
