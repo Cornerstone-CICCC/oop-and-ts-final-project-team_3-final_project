@@ -1,27 +1,25 @@
 ---
-import Welcome from "../components/Welcome.astro";
 import Layout from "../layouts/Layout.astro";
 import Todo from "../components/Todo.astro";
+
 const todos = [
   {
     id: 1,
     label: "Design System",
     title: "Create Design System",
-    description: "Create a design system for the project",
+    description:
+      "Create a design system for a Hero section in 2 different variants. Create a simple presentation with these components.",
   },
   {
     id: 2,
     label: "Typography",
     title: "Update Typography",
-    description: "Update the typography for the project",
+    description:
+      "Modify typography and styling of text placed on the 6 screen of the website design. Prepare a documentation",
   },
 ];
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
 ---
 
 <Layout>
-  <Welcome />
   <Todo todos={todos} />
 </Layout>
