@@ -181,7 +181,7 @@ const { todos = [] }: { todos: Todo[] } = { todos: [], ...Astro.props };
   <div class="todo-list">
     {
       todos.map((todo, index) => (
-        <div class="card" style={{ "--card-index": index }} draggable="true" ondragstart={drag}>
+        <div class="card" style={{ "--card-index": index }} draggable="true" ondragstart={"drag"}>
           <div class="label">
             <div
               class={`label-circle ${todo.label.toLowerCase().replace(" ", "-")}`}
