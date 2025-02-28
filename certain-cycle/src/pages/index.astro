@@ -3,6 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import Footer from '../components/footer.astro';
 import Header from '../components/header.astro';
 import Todo from "../components/Todo.astro";
+import Madal from "../components/Madal.astro";	
 const todos = [
   {
     id: 1,
@@ -24,6 +25,7 @@ const todos = [
 
 <Layout>	
 	<Header/>
+  <Madal/>
   <Todo todos={todos} />
 	<Footer/>
 </Layout>

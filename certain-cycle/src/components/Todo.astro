@@ -221,13 +221,19 @@ const { todos = [] }: { todos: Todo[] } = { todos: [], ...Astro.props };
 <div class="header">
   <div class="title"> Done
     <div class="Icons">
-      <a href="#" id="Add_Icon">
+      <button id="Add_Icon">
           <img src={Add_Icon.src} alt="Add" />
-      </a>
+      </button>
     </div>
   </div>
   <div class="todo-list"></div>
   </div>
+  
 
 
 </div>
+<script>
+document.getElementById("Add_Icon")?.addEventListener("click", ()=>{ 
+  alert("Add Icon Clicked");
+});
+</script>
