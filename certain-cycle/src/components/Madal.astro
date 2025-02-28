@@ -1,0 +1,104 @@
+
+    <style>
+        
+        
+        dialog {
+            background: #ccc;
+            border: none;
+            border-radius: 10px;
+            padding: 20px;
+            width: 400px;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin: 10px 0 5px;
+        }
+        input, textarea, select {
+            width: 100%;
+            padding: 5px;
+        }
+        .assigned-container {
+            display: flex;
+            justify-content: space-between;
+        }
+        .date-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .calendar-icon {
+            font-size: 24px;
+        }
+        .button-container {
+            text-align: right;
+            margin-top: 15px;
+        }
+        button {
+            background: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 15px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <button id="openDialog">Create Task</button>
+    
+    <dialog id="taskDialog">
+        <form method="dialog">
+            <div>
+                <label for="title">Title:</label>
+                <input type="text" id="title" required>
+            </div>
+            <div>
+                <label for="assigned">Assigned To:</label>
+                <select id="assigned">
+                    <option value="kendrick">Kendrick</option>
+                    <option value="alex">Alex</option>
+                    <option value="jordan">Jordan</option>
+                </select>
+            </div>
+            <div>
+                <label for="description">Description</label>
+                <textarea id="description" rows="4" required></textarea>
+            </div>
+            <div class="date-container">
+                <label for="dueDate">Due Date:</label>
+                <input type="date" id="dueDate" required>
+            </div>
+            <div class="button-container">
+                <button type="submit" id="createTask">Create Task</button>
+            </div>
+        </form>
+    </dialog>
+    
+    <script type="module">
+        const dialog = document.getElementById('taskDialog');
+        const openDialogBtn = document.getElementById('openDialog');
+        const createTaskBtn = document.getElementById('createTask');
+        
+        let titleInput = document.getElementById('title');
+        let descriptionInput = document.getElementById('description');
+        let assignedSelect = document.getElementById('assigned');
+        let dueDateInput = document.getElementById('dueDate');
+        
+        openDialogBtn.addEventListener('click', () => dialog.showModal());
+        
+        createTaskBtn.addEventListener('click', (event) => {
+            event.preventDefault(); // Prevent default form submission
+            
+            const task = {
+                title: titleInput.value,
+                description: descriptionInput.value,
+                assignedTo: assignedSelect.value,
+                dueDate: dueDateInput.value
+            };
+            
+            console.log("Task Created:", task);
+            dialog.close();
+        });
+    </script>
+
