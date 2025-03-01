@@ -1,0 +1,140 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+  dueDate?: string;
+  assignee?: string;
+  priority?: string;
+}
+
+const { title, description, dueDate, assignee, priority } = Astro.props;
+---
+
+<div class="modal-overlay">
+  <div class="modal">
+    <div class="modal-content">
+      <div class="modal-main">
+        <h2>{title}</h2>
+        <p>{description}</p>
+      </div>
+      <div class="modal-sidebar">
+        <div class="details">
+          <h3>Details</h3>
+          {
+            dueDate && (
+              <div class="detail-item">
+                <span class="label">Due Date:</span>
+                <span>{dueDate}</span>
+              </div>
+            )
+          }
+          {
+            assignee && (
+              <div class="detail-item">
+                <span class="label">Assignee:</span>
+                <span>{assignee}</span>
+              </div>
+            )
+          }
+          {
+            priority && (
+              <div class="detail-item">
+                <span class="label">Priority:</span>
+                <span>{priority}</span>
+              </div>
+            )
+          }
+        </div>
+      </div>
+    </div>
+    <button class="close-button">&times;</button>
+  </div>
+</div>
+
+<style>
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+
+  .modal {
+    background: white;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 800px;
+    position: relative;
+    max-height: 90vh;
+    overflow: auto;
+  }
+
+  .modal-content {
+    display: flex;
+    padding: 20px;
+    gap: 20px;
+  }
+
+  .modal-main {
+    flex: 1;
+  }
+
+  .modal-sidebar {
+    width: 250px;
+    border-left: 1px solid #eee;
+    padding-left: 20px;
+  }
+
+  .close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 5px;
+  }
+
+  .detail-item {
+    margin: 10px 0;
+  }
+
+  .label {
+    font-weight: bold;
+    margin-right: 8px;
+  }
+
+  h2 {
+    margin-top: 0;
+  }
+
+  h3 {
+    margin-top: 0;
+  }
+</style>
+
+<script>
+  const closeButton = document.querySelector(".close-button");
+  const overlay = document.querySelector(".modal-overlay");
+
+  if (overlay && closeButton) {
+    const closeModal = () => {
+      overlay.remove();
+    };
+
+    overlay.addEventListener("click", (e) => {
+      if (e.target === overlay) {
+        closeModal();
+      }
+    });
+
+    closeButton.addEventListener("click", closeModal);
+  }
+</script>

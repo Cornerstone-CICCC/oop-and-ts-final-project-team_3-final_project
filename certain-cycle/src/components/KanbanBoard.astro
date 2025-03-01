@@ -1,0 +1,96 @@
+---
+
+---
+
+<div class="kanban-board">
+  <slot />
+</div>
+
+<style>
+  .kanban-board {
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+    background-color: #f5f5f5;
+    min-height: 100vh;
+  }
+</style>
+
+<script>
+  let draggedCard: Element | null = null;
+
+  document.querySelectorAll(".card").forEach((card) => {
+    card.setAttribute("draggable", "true");
+
+    card.addEventListener("dragstart", (e) => {
+      draggedCard = card;
+      card.classList.add("dragging");
+      // @ts-ignore
+      e.dataTransfer.effectAllowed = "move";
+    });
+
+    card.addEventListener("dragend", () => {
+      draggedCard?.classList.remove("dragging");
+      draggedCard = null;
+    });
+
+    document.querySelectorAll(".column-content").forEach((column) => {
+      column.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        // @ts-ignore
+        e.dataTransfer.dropEffect = "move";
+
+        if (draggedCard) {
+          // @ts-ignore
+          const closestCard = getClosestCard(column, e.clientY);
+          if (closestCard) {
+            column.insertBefore(draggedCard, closestCard);
+          } else {
+            column.appendChild(draggedCard);
+          }
+        }
+      });
+
+      column.addEventListener("dragenter", (e) => {
+        e.preventDefault();
+        column.classList.add("drop-target");
+      });
+
+      column.addEventListener("dragleave", () => {
+        column.classList.remove("drop-target");
+      });
+
+      column.addEventListener("drop", (e) => {
+        e.preventDefault();
+        column.classList.remove("drop-target");
+
+        const columnElement = column.closest(".column");
+        const columnTitle =
+          columnElement?.querySelector(".column-title")?.textContent ??
+          "Unknown Column";
+        const cardTitle =
+          draggedCard?.querySelector(".card-title")?.textContent ??
+          "Unknown Card";
+        console.log(`Moved card "${cardTitle}" to ${columnTitle}`);
+      });
+    });
+  });
+
+  function getClosestCard(column: Element, y: number) {
+    const cards = [...column.querySelectorAll(".card:not(.dragging)")];
+
+    return cards.reduce(
+      (closest, card) => {
+        const box = card.getBoundingClientRect();
+        const offset = y - box.top - box.height / 2;
+
+        if (offset < 0 && offset > closest.offset) {
+          return { offset, element: card };
+        } else {
+          return closest;
+        }
+      },
+      { offset: Number.NEGATIVE_INFINITY, element: null as Element | null }
+    ).element;
+  }
+</script>

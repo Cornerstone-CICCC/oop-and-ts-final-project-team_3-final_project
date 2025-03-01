@@ -1,0 +1,149 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  dueDate?: string;
+  assignee?: string;
+  priority?: string;
+}
+
+const { title, description, dueDate, assignee, priority } = Astro.props;
+---
+
+<div
+  class="card"
+  data-due-date={dueDate}
+  data-assignee={assignee}
+  data-priority={priority}
+>
+  <div class="card-header">
+    <h3 class="card-title">{title}</h3>
+    <div class="menu-container">
+      <button class="menu-button" aria-label="More options">⋮</button>
+      <div class="menu-dropdown">
+        <button class="menu-item edit-button">Edit</button>
+        <button class="menu-item delete-button">Delete</button>
+      </div>
+    </div>
+  </div>
+  <p class="card-description">{description}</p>
+</div>
+
+<style>
+  .card {
+    background: white;
+    border-radius: 4px;
+    padding: 10px;
+    margin-bottom: 10px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+    cursor: pointer;
+  }
+
+  .card:hover {
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  }
+
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 8px;
+  }
+
+  .card-title {
+    margin: 0;
+    font-size: 1.1em;
+    flex: 1;
+  }
+
+  .card-description {
+    margin: 0;
+    font-size: 0.9em;
+    color: #666;
+  }
+
+  .menu-container {
+    position: relative;
+  }
+
+  .menu-button {
+    background: none;
+    border: none;
+    font-size: 1.2em;
+    padding: 2px 8px;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+
+  .menu-button:hover {
+    background-color: #f0f0f0;
+  }
+
+  .menu-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: white;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    display: none;
+    min-width: 120px;
+    z-index: 100;
+  }
+
+  .menu-dropdown.show {
+    display: block;
+  }
+
+  .menu-item {
+    display: block;
+    width: 100%;
+    padding: 8px 16px;
+    text-align: left;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 0.9em;
+  }
+
+  .menu-item:hover {
+    background-color: #f5f5f5;
+  }
+
+  .delete-button {
+    color: #dc3545;
+  }
+</style>
+
+<script>
+  document.addEventListener("click", (e) => {
+    const target = e.target as HTMLElement;
+    const menuButton = target.closest(".menu-button");
+
+    if (menuButton) {
+      e.stopPropagation();
+      const dropdown = menuButton.nextElementSibling as HTMLElement;
+      dropdown.classList.toggle("show");
+    } else {
+      document.querySelectorAll(".menu-dropdown.show").forEach((dropdown) => {
+        dropdown.classList.remove("show");
+      });
+    }
+  });
+
+  document.querySelectorAll(".menu-item").forEach((item) => {
+    item.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const action = (e.target as HTMLElement).classList.contains("edit-button")
+        ? "edit"
+        : "delete";
+      const card = (e.target as HTMLElement).closest(".card");
+
+      if (action === "edit") {
+        console.log("Edit card:", card);
+      } else {
+        console.log("Delete card:", card);
+      }
+    });
+  });
+</script>

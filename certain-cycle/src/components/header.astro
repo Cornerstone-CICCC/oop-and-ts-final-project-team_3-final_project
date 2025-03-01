@@ -1,89 +1,87 @@
 ---
-import { Image } from 'astro:assets';
-import Bell_Icon from '../assets/bell-svgrepo-com.svg';
-import FAQ_Icon from '../assets/about-faq-help-question-svgrepo-com.svg';
-import User_Icon from '../assets/user-avatar-profile-svgrepo-com.svg';
-import Search_I from '../assets/search-svgrepo-com.svg'
-
+import { Image } from "astro:assets";
+import Bell_Icon from "../assets/bell-svgrepo-com.svg";
+import FAQ_Icon from "../assets/about-faq-help-question-svgrepo-com.svg";
+import User_Icon from "../assets/user-avatar-profile-svgrepo-com.svg";
+import Search_I from "../assets/search-svgrepo-com.svg";
 ---
 
-
 <div id="header_Box">
-    <div class="header">
-        <div class="headertxt">
-            <a href="#" id="Search_Icon">
-                <img src={Search_I.src} alt="Bell" />
-            <input id="headertxt" type="text" placeholder="Search Task">
-        </div>
-        <div class="Icons">
-            <a href="#" id="Bell">
-                <img src={Bell_Icon.src} alt="Bell" />
-            </a>
-            <a href="#" id="FAQ">
-                <img src={FAQ_Icon.src} alt="FAQ" />
-            </a>
-            <a href="#" id="User_Icon"> 
-                <img src={User_Icon.src} alt="User" />
-            </a>
-            
-        </div>
+  <div class="header">
+    <div class="headertxt">
+      <a href="#" id="Search_Icon">
+        <img src={Search_I.src} alt="Bell" />
+        <input id="headertxt" type="text" placeholder="Search Task" />
+      </a>
+      <div class="Icons">
+        <a href="#" id="Bell">
+          <img src={Bell_Icon.src} alt="Bell" />
+        </a>
+        <a href="#" id="FAQ">
+          <img src={FAQ_Icon.src} alt="FAQ" />
+        </a>
+        <a href="#" id="User_Icon">
+          <img src={User_Icon.src} alt="User" />
+        </a>
+      </div>
     </div>
-</div>
+  </div>
 
-<style>
+  <style>
     #header_Box {
-        background-color: rgba(189, 195, 255, 1);
-        height: 50px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+      background-color: rgba(189, 195, 255, 1);
+      height: 50px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
     #headertxt {
-        border-radius: 8px;
-        width: 11rem;
-        height: 2rem;
-        border: 0px;}
+      border-radius: 8px;
+      width: 11rem;
+      height: 2rem;
+      border: 0px;
+    }
     .header {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 80%;
-    flex-direction: row;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 80%;
+      flex-direction: row;
     }
     #header_logo img {
-        width: 50px;
-        height: 50px;
+      width: 50px;
+      height: 50px;
     }
-    
+
     .Icons {
-        display: flex;
-        justify-content: space-between;
-        width: 100px;
+      display: flex;
+      justify-content: space-between;
+      width: 100px;
     }
-    #Search_Icon{
-        display: flex;
-        flex-direction: row;
-        align-items: center;
+    #Search_Icon {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
     }
 
     #Search_Icon img {
-        width: 30px;
-        height: 30px;
-        cursor:pointer;
-
+      width: 30px;
+      height: 30px;
+      cursor: pointer;
     }
     .Icons img {
-        width: 30px;
-        height: 30px;
+      width: 30px;
+      height: 30px;
     }
     #footer_Box {
-        background-color: #f1f1f1;
-        height: 50px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+      background-color: #f1f1f1;
+      height: 50px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
     #footer_Box p {
-        font-size: 20px;
+      font-size: 20px;
     }
-</style>
+  </style>
+</div>

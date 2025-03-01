@@ -1,8 +1,12 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import Footer from '../components/footer.astro';
-import Header from '../components/header.astro';
-import Todo from "../components/Todo.astro";
+import Layout from "../layouts/Layout.astro";
+import Footer from "../components/footer.astro";
+import Header from "../components/header.astro";
+import KanbanBoard from "../components/KanbanBoard.astro";
+import KanbanColumn from "../components/KanbanColumn.astro";
+import KanbanCard from "../components/KanbanCard.astro";
+import Modal from "../components/Modal.astro";
+
 const todos = [
   {
     id: 1,
@@ -22,8 +26,33 @@ const todos = [
 // Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
 ---
 
-<Layout>	
-	<Header/>
-  <Todo todos={todos} />
-	<Footer/>
+<Layout>
+  <Header />
+  <KanbanBoard>
+    <KanbanColumn title="To Do" imageUrl="/todo-icon.png">
+      <KanbanCard
+        title="Create Design"
+        description="Create initial wireframes for the new project"
+      />
+      <KanbanCard
+        title="Research"
+        description="Research competitor products and features"
+      />
+    </KanbanColumn>
+
+    <KanbanColumn title="In Progress" imageUrl="/in-progress-icon.png">
+      <KanbanCard
+        title="Development"
+        description="Start implementing the core features"
+      />
+    </KanbanColumn>
+
+    <KanbanColumn title="Done" imageUrl="/done-icon.png">
+      <KanbanCard
+        title="Planning"
+        description="Project planning and requirements gathering complete"
+      />
+    </KanbanColumn>
+  </KanbanBoard>
+  <Footer />
 </Layout>
