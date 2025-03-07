@@ -1,0 +1,165 @@
+---
+
+---
+
+<div class="flex gap-4 px-4">
+  <div id="task-list" class="flex flex-row gap-4 overflow-x-auto">
+    <!-- Injected kanban board -->
+  </div>
+</div>
+
+<script>
+  import Sortable from "sortablejs";
+  import { TaskContext } from "../lib/taskStore";
+  import { TaskModalContext } from "../lib/taskModalStore";
+
+  const taskContext = TaskContext.getInstance();
+  const taskModalContext = TaskModalContext.getInstance();
+
+  function renderTasks() {
+    const columns = taskContext.getColumns();
+    const taskList = document.getElementById("task-list");
+    if (!taskList) throw new Error("task-list not found");
+    let ids: string[] = [];
+    taskList.innerHTML = columns
+      .map((column) => {
+        ids.push(`column-${column.label}`);
+        return `
+            <div id="column-${column.label}" class="column-container border border-gray-300 rounded-lg p-4 bg-[#E1E1E1] min-w-[300px] w-full max-w-[25%] min-h-[60vh]" column-label="${column.label}">
+                <div class="flex justify-between mb-4">
+                    <h3 id="column-title-${column.label}" class="text-xl font-semibold column-title px-2 py-0.5" data-column-id="${column.label}" contenteditable="true">${column.label}</h3>
+                    <div class="flex gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="cursor-pointer add-task-icon">
+                            <path fill="currentColor" d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+                        </svg>
+                        <button class="delete-column-icon h-6">
+                          <img src="/delete.svg" alt="delete" class="w-6 h-6" />
+                        </button>
+                    </div>
+                </div>
+              <div class="flex flex-col gap-2 sortable-container min-h-full" data-column-label="${column.label}">
+                ${column.tasks
+                  .map(
+                    (task: { id: any; title: any; description: any }) => `
+                  <div class="task-item border border-gray-300 rounded-lg p-2 bg-[#ffffff] p-4 transition-transform duration-300" data-task-id="${task.id}" data-column-label="${column.label}">
+                    <div class="flex justify-between">
+                      <h4 class="task-title font-bold w-[100%] overflow-hidden whitespace-nowrap focus:outline-none">${task.title}</h4>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="cursor-pointer edit-task-icon">
+                        <path fill="currentColor" d="M5 3c-1.11 0-2 .89-2 2v14c0 1.11.89 2 2 2h14c1.11 0 2-.89 2-2v-7h-2v7H5V5h7V3H5m12.78 1a.69.69 0 0 0-.48.2l-1.22 1.21l2.5 2.5L19.8 6.7c.26-.26.26-.7 0-.95L18.25 4.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L8 13.5V16h2.5l7.37-7.37l-2.5-2.5Z"/>
+                      </svg>
+                    </div>
+                    <p class="task-description text-sm py-2 pr-6 w-full focus:outline-none">${task.description}</p>
+                    
+                  </div>
+                `
+                  )
+                  .join("")}
+              </div>
+            </div>
+          `;
+      })
+      .join("");
+    ids?.forEach((id) => {
+      const element = document
+        .getElementById(id)
+        ?.querySelector(".sortable-container");
+      if (!element) return;
+      new Sortable(element as HTMLElement, {
+        group: "shared",
+        animation: 150,
+        emptyInsertThreshold: 20,
+        onEnd: (event) => {
+          const taskId = event.item.getAttribute("data-task-id");
+          const fromColumnLabel =
+            event.from.getAttribute("data-column-label") ?? "";
+          const toColumnLabel =
+            event.to.getAttribute("data-column-label") ?? "";
+          const newIndex = event.newIndex ?? 0;
+          taskContext.moveTask(
+            Number(taskId),
+            fromColumnLabel,
+            toColumnLabel,
+            newIndex
+          );
+        },
+      });
+    });
+  }
+
+  function setupColumn() {
+    const columns = document.querySelectorAll(".column-container");
+    columns.forEach((column) => {
+      setupColumnButton(column as HTMLElement);
+      setupTask(column as HTMLElement);
+    });
+  }
+
+  function setupColumnButton(column: HTMLElement) {
+    const addTaskIcon = column.querySelector(".add-task-icon");
+    addTaskIcon?.addEventListener("click", () => {
+      taskContext.addTask(
+        "Title",
+        "Description",
+        column.getAttribute("column-label") ?? ""
+      );
+    });
+    const deleteColumnIcon = column.querySelector(".delete-column-icon");
+    deleteColumnIcon?.addEventListener("click", () => {
+      if (
+        confirm(
+          `Are you sure you want to delete ${column.getAttribute("column-label")}?`
+        )
+      ) {
+        taskContext.deleteColumn(column.getAttribute("column-label") ?? "");
+      }
+    });
+  }
+
+  function setupTask(column: HTMLElement) {
+    const tasks = column.querySelectorAll(".task-item");
+    tasks.forEach((task) => {
+      const taskId = task.getAttribute("data-task-id");
+      const columnLabel = column.getAttribute("column-label");
+
+      const editTaskIcon = task.querySelector(".edit-task-icon");
+      editTaskIcon?.addEventListener("click", () => {
+        const modalWrapper = document.querySelector(".modal-wrapper");
+        if (modalWrapper) {
+          taskModalContext.openModal(taskId ?? "", columnLabel ?? "");
+        }
+      });
+    });
+  }
+
+  function setupColumnLabelEditing() {
+    const columnTitles = document.querySelectorAll(".column-title");
+    columnTitles.forEach((title) => {
+      title.addEventListener("blur", function (this: HTMLElement) {
+        const columnId = title.getAttribute("data-column-id");
+        const newTitle = title.textContent?.trim();
+        if (newTitle && columnId) {
+          taskContext.updateColumnLabel(columnId, newTitle);
+        }
+      });
+
+      title.addEventListener("keydown", function (this: HTMLElement, e: Event) {
+        const event = e as KeyboardEvent;
+        if (event.key === "Enter") {
+          e.preventDefault();
+          this.blur();
+        }
+      });
+    });
+  }
+
+  function rendering() {
+    renderTasks();
+    setupColumnLabelEditing();
+    setupColumn();
+  }
+
+  rendering();
+
+  // listener
+  taskContext.addListener(rendering);
+</script>
