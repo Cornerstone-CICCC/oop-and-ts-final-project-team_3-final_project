@@ -1,0 +1,30 @@
+@import "tailwindcss";
+
+body {
+  background: url("https://slack-imgs.com/?c=1&o1=ro&url=https%3A%2F%2Fimages.unsplash.com%2Fphoto-1595520519880-a86c48ea536c%3Fq%3D80%26w%3D2070%26auto%3Dformat%26fit%3Dcrop%26ixlib%3Drb-4.0.3%26ixid%3DM3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%253D%253D");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100vh;
+  width: 100vw;
+  background-color: #000;
+}
+
+/* h1,
+button,
+a,
+p {
+  color: #fff;
+} */
+
+.modal {
+  color: #000 !important;
+}
+
+input {
+  background-color: #fff;
+  color: #000;
+  border: 1px solid #000;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+}

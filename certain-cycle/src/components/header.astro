@@ -1,87 +1,77 @@
 ---
-import { Image } from "astro:assets";
-import Bell_Icon from "../assets/bell-svgrepo-com.svg";
-import FAQ_Icon from "../assets/about-faq-help-question-svgrepo-com.svg";
-import User_Icon from "../assets/user-avatar-profile-svgrepo-com.svg";
-import Search_I from "../assets/search-svgrepo-com.svg";
+import { Icon } from "astro-icon/components";
 ---
 
-<div id="header_Box">
-  <div class="header">
-    <div class="headertxt">
-      <a href="#" id="Search_Icon">
-        <img src={Search_I.src} alt="Bell" />
-        <input id="headertxt" type="text" placeholder="Search Task" />
-      </a>
-      <div class="Icons">
-        <a href="#" id="Bell">
-          <img src={Bell_Icon.src} alt="Bell" />
-        </a>
-        <a href="#" id="FAQ">
-          <img src={FAQ_Icon.src} alt="FAQ" />
-        </a>
-        <a href="#" id="User_Icon">
-          <img src={User_Icon.src} alt="User" />
-        </a>
-      </div>
+<header class="flex flex-col text-black pt-10 px-4 pb-6 grid-cols-1 gap-6">
+  <h1
+    id="headerTitle"
+    class="text-4xl text-center text-white font-bold md:col-start-2 md:col-end-3"
+  >
+    Certain Cycle Kanban
+  </h1>
+  <div
+    class="relative order-0 md:order-las md:order-2 md:min-w-[300px] lg:min-w-[480px]"
+  >
+    <input
+      class="p-4 ps-10 rounded-full text-black w-full overflow-hidden md:px-4"
+      type="text"
+      placeholder="Type to search tasks"
+    />
+    <div
+      class="absolute top-4 right-3 flex items-center ps-3 pointer-events-none bg-white"
+      id="searchBar"
+    >
     </div>
+    <p class="h-4 text-white text-xs mt-2"></p>
   </div>
+  <button
+    class="flex gap-2 items-center order-1 text-white justify-self-end ml-auto md:order-2 md:justify-self-start md:flex-1 md:ml-0"
+    id="add-column-button"
+  >
+    <Icon name="mdi:plus" class="text-white" />
+    Add column
+  </button>
+</header>
 
-  <style>
-    #header_Box {
-      background-color: rgba(189, 195, 255, 1);
-      height: 50px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    #headertxt {
-      border-radius: 8px;
-      width: 11rem;
-      height: 2rem;
-      border: 0px;
-    }
-    .header {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 80%;
-      flex-direction: row;
-    }
-    #header_logo img {
-      width: 50px;
-      height: 50px;
-    }
+<script>
+  import { TaskContext } from "../lib/taskStore";
+  import type { Task } from "../lib/types";
+  const taskContext = TaskContext.getInstance();
 
-    .Icons {
-      display: flex;
-      justify-content: space-between;
-      width: 100px;
-    }
-    #Search_Icon {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-    }
+  // add columns
+  const addColumnButton = document.getElementById("add-column-button");
+  if (!addColumnButton) throw new Error("add-column-button not found");
+  addColumnButton.addEventListener("click", () => {
+    taskContext.addColumn("New Column");
+  });
 
-    #Search_Icon img {
-      width: 30px;
-      height: 30px;
-      cursor: pointer;
+  // search
+  const searchEl = document.querySelector("input");
+  if (!searchEl) throw new Error(`search input is not found`);
+  function handleResultText(tasks: Task[]) {
+    const pEl = document.querySelector("p")! as HTMLParagraphElement;
+    if (tasks.length === 0) {
+      pEl.textContent = "No result. Please try different search terms.";
+    } else {
+      pEl.textContent = "";
     }
-    .Icons img {
-      width: 30px;
-      height: 30px;
+  }
+
+  searchEl.addEventListener("input", (e) => {
+    const keyword = (e.target as HTMLInputElement).value;
+    taskContext.updateFilter(keyword);
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.code === "delete") {
+      const keyword = "";
+      taskContext.updateFilter(keyword);
     }
-    #footer_Box {
-      background-color: #f1f1f1;
-      height: 50px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    #footer_Box p {
-      font-size: 20px;
-    }
-  </style>
-</div>
+  });
+
+  taskContext.addListener(() => {
+    const columns = taskContext.getColumns();
+    const tasks = columns.map((column) => column.tasks).flat();
+    handleResultText(tasks);
+  });
+</script>
